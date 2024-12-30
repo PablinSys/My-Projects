@@ -1,11 +1,19 @@
+#include <filesystem>
 #include "../include/peças.hpp"
+#include <iostream>
 
-Peça::Peça(const std::string& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco)
+Peça::Peça(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco)
 {
     tab = &tabuleiro; this->isBranco = isBranco; this->position = position; objectUI = new sf::Sprite;
-    if (!peça_img.loadFromFile(path_img, sf::IntRect({(int)position.x, (int)position.y}, {32, 32})))
+    if (!peça_img.loadFromFile(path_img))
         throw std::runtime_error("Erro ao carregar a textura");
+    
+    peça_img.setSmooth(true);
+    objectUI->setScale(2, 2);
     objectUI->setTexture(peça_img);
+    objectUI->setPosition({position.x, position.y});
+    auto [w,h] = peça_img.getSize();
+    std::cout << "Peça de tamanho (w,h) = (" << w << ", " << h << ") pixels\n";
 }
 bool Peça::addNewPos(int x, int y)
 {
@@ -18,8 +26,20 @@ Peça::~Peça()
     delete objectUI;
 }
 
-/* SEM IMPLEMENTAÇÃO AINDA */
+Peao::Peao(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco)
+    : Peça(path_img, position, tabuleiro, isBranco) {}
+Torre::Torre(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco)
+    : Peça(path_img, position, tabuleiro, isBranco) {}
+Bispo::Bispo(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco)
+    : Peça(path_img, position, tabuleiro, isBranco) {}
+Cavalo::Cavalo(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco)
+    : Peça(path_img, position, tabuleiro, isBranco) {}
+Rainha::Rainha(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco)
+    : Peça(path_img, position, tabuleiro, isBranco) {}
+Rei::Rei(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco)
+    : Peça(path_img, position, tabuleiro, isBranco) {}
 
+/* AINDA NÃO IMPLEMENTADO */
 bool Peao::analisarMovimento(const sf::Vector2f& pos) { return true; } 
 bool Torre::analisarMovimento(const sf::Vector2f& pos) { return true; }
 bool Bispo::analisarMovimento(const sf::Vector2f& pos) { return true; }
