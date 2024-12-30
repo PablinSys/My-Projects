@@ -8,8 +8,7 @@ class Peça;
 class Tabuleiro : public I_UI<sf::VertexArray>
 {
     private :
-        Peça** peças_brancas;
-        Peça** peças_pretas;
+        Peça** tabuleiro;
 	public :
 		Tabuleiro(const int& tamanho, const bool& brancasPrimeiro);
         bool addNewPos(int x, int y) override;

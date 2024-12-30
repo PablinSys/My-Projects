@@ -13,7 +13,7 @@ Peça::Peça(const std::filesystem::path& path_img, const sf::Vector2f& position
     objectUI->setTexture(peça_img);
     objectUI->setPosition({position.x, position.y});
     auto [w,h] = peça_img.getSize();
-    std::cout << "Peça de tamanho (w,h) = (" << w << ", " << h << ") pixels\n";
+    std::cout << "Peça de tamanho (w,h) = (" << w << ", " << h << ") pixels\n" << typeid(*this).name() << '\n';
 }
 bool Peça::addNewPos(int x, int y)
 {

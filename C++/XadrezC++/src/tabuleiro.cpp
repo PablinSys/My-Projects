@@ -31,52 +31,47 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
     }
 
 //  ADICIONANDO AS PEÇAS NO TABULEIRO
-    peças_brancas = new Peça*[16]; peças_pretas = new Peça*[16];
+    tabuleiro = new Peça*[64];
     float pos_peça_x = tamanho/2 - 60, pos_peça_y = tamanho*7 - tamanho/2 - 60;
-    // ADICIONANDO PEÇAS BRANCAS 
+    // ADICIONANDO AS 2 COLUNAS COM PEÇAS MAIS A BAIXO DO TABULEIRO
     for (int i = 0; i < 16; i++)
     {
-        if (brancasPrimeiro)
-        {
-            if (i < 8) peças_brancas[i] = new Peao(std::filesystem::current_path() / "assets/white/peao.png", sf::Vector2f(pos_peça_x+i*tamanho, pos_peça_y), *this, true);
-            else if (i == 8 || i == 15) peças_brancas[i] = new Torre(std::filesystem::current_path() / "assets/white/torre.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y+tamanho), *this, true);
-            else if (i == 9 || i == 14) peças_brancas[i] = new Cavalo(std::filesystem::current_path() / "assets/white/cavalo.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y+tamanho), *this, true);
-            else if (i == 10 || i == 13) peças_brancas[i] = new Bispo(std::filesystem::current_path() / "assets/white/bispo.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y+tamanho), *this, true);
-            else if (i == 11) peças_brancas[i] = new Rei(std::filesystem::current_path() / "assets/white/rei.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y+tamanho), *this, true);
-            else if (i == 12) peças_brancas[i] = new Rainha(std::filesystem::current_path() / "assets/white/rainha.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y+tamanho), *this, true);
-        }
-        else
-        {
-            if (i < 8) peças_pretas[i] = new Peao( std::filesystem::current_path() / "assets/black/peao.png", sf::Vector2f(pos_peça_x+i*tamanho, pos_peça_y), *this, false);
-            else if (i == 8 || i == 15) peças_pretas[i] = new Torre(std::filesystem::current_path() / "assets/black/torre.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y+tamanho), *this, false);
-            else if (i == 9 || i == 14) peças_pretas[i] = new Cavalo(std::filesystem::current_path() / "assets/black/cavalo.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y+tamanho), *this, false);
-            else if (i == 10 || i == 13) peças_pretas[i] = new Bispo(std::filesystem::current_path() / "assets/black/bispo.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y+tamanho), *this, false);
-            else if (i == 11) peças_pretas[i] = new Rei(std::filesystem::current_path() / "assets/black/rei.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y+tamanho), *this, false);
-            else if (i == 12) peças_pretas[i] = new Rainha(std::filesystem::current_path() / "assets/black/rainha.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y+tamanho), *this, false);
+        bool isWhite = brancasPrimeiro;
+        std::string color = isWhite ? "white" : "black";
 
-        }
+        if (i < 8)
+            tabuleiro[i] = new Peao(std::filesystem::current_path() / ("assets/" + color + "/peao.png"), sf::Vector2f(pos_peça_x + i * tamanho, pos_peça_y), *this, isWhite);
+        else if (i == 8 || i == 15)
+            tabuleiro[i] = new Torre(std::filesystem::current_path() / ("assets/" + color + "/torre.png"), sf::Vector2f(pos_peça_x + (i - 8) * tamanho, pos_peça_y + tamanho), *this, isWhite);
+        else if (i == 9 || i == 14)
+            tabuleiro[i] = new Cavalo(std::filesystem::current_path() / ("assets/" + color + "/cavalo.png"), sf::Vector2f(pos_peça_x + (i - 8) * tamanho, pos_peça_y + tamanho), *this, isWhite);
+        else if (i == 10 || i == 13)
+            tabuleiro[i] = new Bispo(std::filesystem::current_path() / ("assets/" + color + "/bispo.png"), sf::Vector2f(pos_peça_x + (i - 8) * tamanho, pos_peça_y + tamanho), *this, isWhite);
+        else if (i == 11)
+            tabuleiro[i] = new Rei(std::filesystem::current_path() / ("assets/" + color + "/rei.png"), sf::Vector2f(pos_peça_x + (i - 8) * tamanho, pos_peça_y + tamanho), *this, isWhite);
+        else if (i == 12)
+            tabuleiro[i] = new Rainha(std::filesystem::current_path() / ("assets/" + color + "/rainha.png"), sf::Vector2f(pos_peça_x + (i - 8) * tamanho, pos_peça_y + tamanho), *this, isWhite);
     }
     pos_peça_y = tamanho*2 - tamanho/2 - 60;
-    for (int i = 0; i < 16; i++)
+    int pulo = 64 - 16;
+    // ADICIONANDO 2 COLUNAS DE PEÇAS MAIS A CIMA DO TABULEIRO
+    for (int i = pulo; i < 64; i++)
     {
-        if (brancasPrimeiro)
-        {
-            if (i < 8) peças_pretas[i] = new Peao(std::filesystem::current_path() / "assets/black/peao.png", sf::Vector2f(pos_peça_x+i*tamanho, pos_peça_y), *this, false);
-            else if (i == 8 || i == 15) peças_pretas[i] = new Torre(std::filesystem::current_path() / "assets/black/torre.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y-tamanho), *this, false);
-            else if (i == 9 || i == 14) peças_pretas[i] = new Cavalo(std::filesystem::current_path() / "assets/black/cavalo.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y-tamanho), *this, false);
-            else if (i == 10 || i == 13) peças_pretas[i] = new Bispo(std::filesystem::current_path() / "assets/black/bispo.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y-tamanho), *this, false);
-            else if (i == 11) peças_pretas[i] = new Rei(std::filesystem::current_path() / "assets/black/rei.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y-tamanho), *this, false);
-            else if (i == 12) peças_pretas[i] = new Rainha(std::filesystem::current_path() / "assets/black/rainha.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y-tamanho), *this, false);
-        }
-        else
-        {
-            if (i < 8) peças_brancas[i] = new Peao(std::filesystem::current_path() / "assets/white/peao.png", sf::Vector2f(pos_peça_x+i*tamanho, pos_peça_y), *this, true);
-            else if (i == 8 || i == 15) peças_brancas[i] = new Torre(std::filesystem::current_path() / "assets/white/torre.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y-tamanho), *this, true);
-            else if (i == 9 || i == 14) peças_brancas[i] = new Cavalo(std::filesystem::current_path() / "assets/white/cavalo.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y-tamanho), *this, true);
-            else if (i == 10 || i == 13) peças_brancas[i] = new Bispo(std::filesystem::current_path() / "assets/white/bispo.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y-tamanho), *this, true);
-            else if (i == 11) peças_brancas[i] = new Rei(std::filesystem::current_path() / "assets/white/rei.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y-tamanho), *this, true);
-            else if (i == 12) peças_brancas[i] = new Rainha(std::filesystem::current_path() / "assets/white/rainha.png", sf::Vector2f(pos_peça_x+(i-8)*tamanho, pos_peça_y-tamanho), *this, true);
-        }
+        bool isWhite = !brancasPrimeiro;
+        std::string color = isWhite ? "white" : "black";
+
+        if (i < pulo + 8)
+            tabuleiro[i] = new Peao(std::filesystem::current_path() / ("assets/" + color + "/peao.png"), sf::Vector2f(pos_peça_x + (i - pulo) * tamanho, pos_peça_y), *this, isWhite);
+        else if (i == pulo + 8 || i == pulo + 15)
+            tabuleiro[i] = new Torre(std::filesystem::current_path() / ("assets/" + color + "/torre.png"), sf::Vector2f(pos_peça_x + (i - pulo - 8) * tamanho, pos_peça_y - tamanho), *this, isWhite);
+        else if (i == pulo + 9 || i == pulo + 14)
+            tabuleiro[i] = new Cavalo(std::filesystem::current_path() / ("assets/" + color + "/cavalo.png"), sf::Vector2f(pos_peça_x + (i - pulo - 8) * tamanho, pos_peça_y - tamanho), *this, isWhite);
+        else if (i == pulo + 10 || i == pulo + 13)
+            tabuleiro[i] = new Bispo(std::filesystem::current_path() / ("assets/" + color + "/bispo.png"), sf::Vector2f(pos_peça_x + (i - pulo - 8) * tamanho, pos_peça_y - tamanho), *this, isWhite);
+        else if (i == pulo + 11)
+            tabuleiro[i] = new Rei(std::filesystem::current_path() / ("assets/" + color + "/rei.png"), sf::Vector2f(pos_peça_x + (i - pulo - 8) * tamanho, pos_peça_y - tamanho), *this, isWhite);
+        else if (i == pulo + 12)
+            tabuleiro[i] = new Rainha(std::filesystem::current_path() / ("assets/" + color + "/rainha.png"), sf::Vector2f(pos_peça_x + (i - pulo - 8) * tamanho, pos_peça_y - tamanho), *this, isWhite);
     }
 }
 void Tabuleiro::draw(sf::RenderWindow* window)
@@ -85,10 +80,10 @@ void Tabuleiro::draw(sf::RenderWindow* window)
     {
         window->draw(objectUI[i]);
     }
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 64; i++)
     {
-        peças_brancas[i]->draw(window);
-        peças_pretas[i]->draw(window);
+        if (i < 16 || i >= 48)
+            tabuleiro[i]->draw(window);
     }
 }
 bool Tabuleiro::addNewPos(int x, int y){return true;}
