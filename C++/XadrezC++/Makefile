@@ -1,4 +1,7 @@
 
+$(shell mkdir -p $(BIN_DIR))
+$(shell mkdir -p $(BUILD_DIR))
+
 SRC_DIR := src
 BUILD_DIR := build
 BIN_DIR := bin
