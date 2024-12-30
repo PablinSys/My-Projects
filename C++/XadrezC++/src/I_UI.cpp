@@ -4,12 +4,12 @@
 template<>
 void I_UI<sf::VertexArray>::draw(sf::RenderWindow* window)
 {
-    window->draw(objectUI);
+    window->draw(*objectUI);
 }
 template <>
 void I_UI<sf::Sprite>::draw(sf::RenderWindow* window)
 {
-    window->draw(objectUI);
+    window->draw(*objectUI);
 }
 template <typename T>
 inline void I_UI<T>::draw(sf::RenderWindow* window)

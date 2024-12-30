@@ -5,7 +5,7 @@
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
-	Tabuleiro tabuleiro(80);
+	Tabuleiro tabuleiro(100);
 	I_UI<sf::VertexArray>* tabuleiroUI = &tabuleiro;
 
 	while (window.isOpen())

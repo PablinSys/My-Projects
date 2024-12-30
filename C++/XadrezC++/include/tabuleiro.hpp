@@ -7,6 +7,7 @@ class Tabuleiro : public I_UI<sf::VertexArray>
 	public :
 		Tabuleiro(const int& tamanho);
         bool addNewPos(int x, int y) override;
+        void draw(sf::RenderWindow* window) override;
         ~Tabuleiro();
 };
 #endif

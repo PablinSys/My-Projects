@@ -2,18 +2,21 @@
 
 Peça::Peça(const std::string& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco)
 {
-    tab = &tabuleiro; this->isBranco = isBranco; this->position = position;
+    tab = &tabuleiro; this->isBranco = isBranco; this->position = position; objectUI = new sf::Sprite;
     if (!peça_img.loadFromFile(path_img, sf::IntRect({(int)position.x, (int)position.y}, {32, 32})))
         throw std::runtime_error("Erro ao carregar a textura");
-    objectUI.setTexture(peça_img);
+    objectUI->setTexture(peça_img);
 }
 bool Peça::addNewPos(int x, int y)
 {
     position.x = x; position.y = y;
-    objectUI.setPosition(position); // Atualiza a posição da peça *temporário por enquanto até implementar animação
+    objectUI->setPosition(position); // Atualiza a posição da peça *temporário por enquanto até implementar animação
     return true;
 }
-Peça::~Peça() = default;
+Peça::~Peça()
+{
+    delete objectUI;
+}
 
 /* SEM IMPLEMENTAÇÃO AINDA */
 

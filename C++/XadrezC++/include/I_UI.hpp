@@ -7,11 +7,11 @@ template <typename T>
 class I_UI
 { 
     protected : 
-        T objectUI;
+        T* objectUI;
     public:
         sf::Vector2f position;
         virtual bool addNewPos(int x, int y) = 0;
-        void draw(sf::RenderWindow* window);
+        virtual void draw(sf::RenderWindow* window);
 };
 
 #endif
