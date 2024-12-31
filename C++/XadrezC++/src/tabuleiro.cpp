@@ -50,30 +50,31 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
                 bool isWhite = brancasPrimeiro;
                 std::string color = isWhite ? "white" : "black";
                 int pos_x = tamanho/2 + tamanho*index_x - 60, pos_y = (8 - index_y)*tamanho - tamanho/2 - 60;
-                std::string tipo;
                 switch (index_x)
                 {
                     case 0:
                     case 7:
-                        tipo = "torre";
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Torre), std::filesystem::current_path() / ("assets/" + color + "/torre.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
                         break;
                     case 1:
                     case 6:
-                        tipo = "cavalo";
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Cavalo), std::filesystem::current_path() / ("assets/" + color + "/cavalo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
                         break;
                     case 2:
                     case 5:
-                        tipo = "bispo";
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Bispo), std::filesystem::current_path() / ("assets/" + color + "/bispo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
                         break;
                     case 3:
-                        tipo = "rei";
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rei), std::filesystem::current_path() / ("assets/" + color + "/rei.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
                         break;
                     case 4:
-                        tipo = "rainha";
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rainha), std::filesystem::current_path() / ("assets/" + color + "/rainha.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
                         break;
                 }
-                if (index_y == 1) tipo = "peao";
-                tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(tipo, std::filesystem::current_path() / ("assets/" + color + "/" + tipo + ".png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                if (index_y == 1) 
+                {
+                    tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Peao), std::filesystem::current_path() / ("assets/" + color + "/peao.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                }
             }
         }
         else if (index_y > 5)
@@ -84,30 +85,31 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
                 bool isWhite = !brancasPrimeiro;
                 std::string color = isWhite ? "white" : "black";
                 int pos_x = tamanho/2 + tamanho*index_x - 60, pos_y = (8 - index_y)*tamanho - tamanho/2 - 60;
-                std::string tipo;
                 switch (index_x)
                 {
                     case 0:
                     case 7:
-                        tipo = "torre";
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Torre), std::filesystem::current_path() / ("assets/" + color + "/torre.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
                         break;
                     case 1:
                     case 6:
-                        tipo = "cavalo";
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Cavalo), std::filesystem::current_path() / ("assets/" + color + "/cavalo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
                         break;
                     case 2:
                     case 5:
-                        tipo = "bispo";
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Bispo), std::filesystem::current_path() / ("assets/" + color + "/bispo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
                         break;
                     case 3:
-                        tipo = "rei";
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rei), std::filesystem::current_path() / ("assets/" + color + "/rei.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
                         break;
                     case 4:
-                        tipo = "rainha";
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rainha), std::filesystem::current_path() / ("assets/" + color + "/rainha.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
                         break;
                 }
-                if (index_y == 6) tipo = "peao";
-                tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(tipo, std::filesystem::current_path() / ("assets/" + color + "/" + tipo + ".png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                if (index_y == 6) 
+                {
+                    tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Peao), std::filesystem::current_path() / ("assets/" + color + "/peao.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                }
             }
         }
     }
@@ -127,29 +129,39 @@ void Tabuleiro::draw(sf::RenderWindow* window)
 bool Tabuleiro::addNewPos(int x, int y, bool isMoviment){return false;}
 void Tabuleiro::newPosObject(int index_x, int index_y, sf::Vector2f new_pos, bool isMoviment)
 {
-    if (tabuleiro[index_y][index_x] != nullptr) {
-        std::cout << "Movendo peça para (" << index_x << ", " << index_y << ") to position (" << new_pos.x << ", " << new_pos.y << ")" << std::endl;
+    if (!std::is_same_v<decltype(*tabuleiro[index_y][index_x]), Peça>) {
+        std::cout << "Movendo peça para (" << index_x << ", " << index_y << ") to position (" << (int)(new_pos.x/tamanho_casas) << ", " << (int)(new_pos.y/tamanho_casas) << ")" << std::endl;
         
-        if (!isMoviment && tabuleiro[index_y][index_x]->addNewPos(new_pos.x, new_pos.y, isMoviment)) {
-            int new_index_x = static_cast<int>(new_pos.x / tamanho_casas);
-            int new_index_y = static_cast<int>(new_pos.y / tamanho_casas);
-            bool isWhite = começouBrancas;
+        if (!isMoviment)
+        {
+            if (tabuleiro[index_y][index_x]->addNewPos(new_pos.x, new_pos.y, isMoviment))
+            {
+                int new_index_x = static_cast<int>(new_pos.x / tamanho_casas);
+                int new_index_y = static_cast<int>(new_pos.y / tamanho_casas);
+                bool isWhite = começouBrancas;
 
-            std::string tipo = typeid(*tabuleiro[index_y][index_x]).name(); // Obtém o tipo da peça
-            std::transform(tipo.begin(), tipo.end(), tipo.begin(), ::tolower);
-            std::cout << "Peça type: " << tipo << std::endl;
-            
-            std::unique_ptr<Peça> novaPeça = PeçasInstances::criarPeça(tipo, std::filesystem::current_path() / ("assets/" + std::string(isWhite ? "white" : "black") + "/" + tipo + ".png"), new_pos, *this, isWhite);
-            tabuleiro[new_index_y][new_index_x] = novaPeça.release();
-            tabuleiro[index_y][index_x] = nullptr;
+                std::string tipo = typeid(*tabuleiro[index_y][index_x]).name();
+                tipo.erase(std::remove_if(tipo.begin(), tipo.end(), [](char c) { return std::isdigit(c); }), tipo.end()); std::transform(tipo.begin(), tipo.end(), tipo.begin(), ::tolower);
+                std::cout << "Peça type: " << tipo << std::endl;
+                
+                std::unique_ptr<Peça> novaPeça = PeçasInstances::criarPeça(typeid(*tabuleiro[index_y][index_x]), std::filesystem::current_path() / ("assets/" + std::string(isWhite ? "white" : "black") + "/" + tipo + ".png"), new_pos, *this, isWhite);
+                tabuleiro[new_index_y][new_index_x] = novaPeça.release();
+                tabuleiro[index_y][index_x] = nullptr;
 
-            std::cout << "Peça movida : (" << new_index_x << ", " << new_index_y << ")" << std::endl;
+                std::cout << "Peça movida : (" << new_index_x << ", " << new_index_y << ")" << std::endl;
 
-            tabuleiro[new_index_y][new_index_x]->addNewPos(new_index_x * tamanho_casas / 2 - 60, new_index_y * tamanho_casas - tamanho_casas / 2 - 60, !isMoviment);
+                tabuleiro[new_index_y][new_index_x]->addNewPos(new_index_x != 0 ? new_index_x * tamanho_casas / 2 - 60 : tamanho_casas / 2 - 60, new_index_y * tamanho_casas - tamanho_casas / 2 - 60, !isMoviment);
+                while(true){}
+            }
+            else 
+            {
+                tabuleiro[index_y][index_x]->addNewPos(index_x != 0 ? (index_x * tamanho_casas / 2 - 60) : tamanho_casas / 2, index_y * tamanho_casas - tamanho_casas / 2 - 60, !isMoviment);
+            }
         }
     }
     else {
         std::cout << "Não a peças (" << index_x << ", " << index_y << ") to move." << std::endl;
+        std::cout << "Peça type: " << typeid(*tabuleiro[index_y][index_x]).name() << std::endl;
     }
 }
 
