@@ -50,6 +50,7 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
                 bool isWhite = brancasPrimeiro;
                 std::string color = isWhite ? "white" : "black";
                 int pos_x = tamanho/2 + tamanho*index_x - 60, pos_y = (8 - index_y)*tamanho - tamanho/2 - 60;
+                std::cout << "Pos: " << pos_x << ", " << pos_y << std::endl;
                 switch (index_x)
                 {
                     case 0:
@@ -85,6 +86,7 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
                 bool isWhite = !brancasPrimeiro;
                 std::string color = isWhite ? "white" : "black";
                 int pos_x = tamanho/2 + tamanho*index_x - 60, pos_y = (8 - index_y)*tamanho - tamanho/2 - 60;
+                
                 switch (index_x)
                 {
                     case 0:
@@ -112,6 +114,13 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
                 }
             }
         }
+        else 
+        {
+            for (int index_x = 0; index_x < 8; index_x++)
+            {
+                tabuleiro[index_y][index_x] = nullptr;
+            }
+        }
     }
 }
 void Tabuleiro::draw(sf::RenderWindow* window)
@@ -122,15 +131,18 @@ void Tabuleiro::draw(sf::RenderWindow* window)
     }
     for (int i = 0; i < 8; i++)
         for (int j = 0; j < 8; j++)
-            if (i < 2 || i > 5) 
+            if (!std::is_same_v<decltype(*tabuleiro[i][j]), Peça>)
+            {
+                if (tabuleiro[i][j] == nullptr) continue;
                 tabuleiro[i][j]->draw(window);
+            }
         
 }
 bool Tabuleiro::addNewPos(int x, int y, bool isMoviment){return false;}
 void Tabuleiro::newPosObject(int index_x, int index_y, sf::Vector2f new_pos, bool isMoviment)
 {
     if (!std::is_same_v<decltype(*tabuleiro[index_y][index_x]), Peça>) {
-        std::cout << "Movendo peça para (" << index_x << ", " << index_y << ") to position (" << (int)(new_pos.x/tamanho_casas) << ", " << (int)(new_pos.y/tamanho_casas) << ")" << std::endl;
+        //std::cout << "Movendo peça para (" << index_x << ", " << index_y << ") to position (" << (int)(new_pos.x/tamanho_casas) << ", " << (int)(new_pos.y/tamanho_casas) << ")" << std::endl;
         
         if (!isMoviment)
         {
@@ -148,14 +160,12 @@ void Tabuleiro::newPosObject(int index_x, int index_y, sf::Vector2f new_pos, boo
                 tabuleiro[new_index_y][new_index_x] = novaPeça.release();
                 tabuleiro[index_y][index_x] = nullptr;
 
-                std::cout << "Peça movida : (" << new_index_x << ", " << new_index_y << ")" << std::endl;
-
-                tabuleiro[new_index_y][new_index_x]->addNewPos(new_index_x != 0 ? new_index_x * tamanho_casas / 2 - 60 : tamanho_casas / 2 - 60, new_index_y * tamanho_casas - tamanho_casas / 2 - 60, !isMoviment);
-                while(true){}
+                tabuleiro[new_index_y][new_index_x]->addNewPos(tamanho_casas/2 + tamanho_casas*new_index_x - 60, (new_index_y)*tamanho_casas-tamanho_casas/8, !isMoviment);
+                //while(true){}
             }
             else 
             {
-                tabuleiro[index_y][index_x]->addNewPos(index_x != 0 ? (index_x * tamanho_casas / 2 - 60) : tamanho_casas / 2, index_y * tamanho_casas - tamanho_casas / 2 - 60, !isMoviment);
+                tabuleiro[index_y][index_x]->addNewPos(index_x != 0 ? (index_x * tamanho_casas / 2 - 60) : tamanho_casas / 2, (index_y) * tamanho_casas + tamanho_casas / 2 + 60, !isMoviment);
             }
         }
     }
