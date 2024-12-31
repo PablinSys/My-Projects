@@ -39,48 +39,75 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
     }
 //  ADICIONANDO AS PEÇAS NO TABULEIRO :
     // ADICIONANDO AS 2 COLUNAS COM PEÇAS MAIS A BAIXO DO TABULEIRO
+    int index_real_y = 0;
     for (int index_y = 0; index_y < 8; index_y++)
     {
         if (index_y < 2)
         {
+            index_real_y = 7 - index_y;
             for (int index_x = 0; index_x < 8; index_x++)
             {
                 bool isWhite = brancasPrimeiro;
                 std::string color = isWhite ? "white" : "black";
                 int pos_x = tamanho/2 + tamanho*index_x - 60, pos_y = (8 - index_y)*tamanho - tamanho/2 - 60;
-                if (index_y == 1)
-                    tabuleiro[index_y][index_x] = new Peao(std::filesystem::current_path() / ("assets/" + color + "/peao.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
-                else if (index_x == 0 || index_x == 7)
-                    tabuleiro[index_y][index_x] = new Torre(std::filesystem::current_path() / ("assets/" + color + "/torre.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
-                else if (index_x == 1 || index_x == 6)
-                    tabuleiro[index_y][index_x] = new Cavalo(std::filesystem::current_path() / ("assets/" + color + "/cavalo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
-                else if (index_x == 2 || index_x == 5)
-                    tabuleiro[index_y][index_x] = new Bispo(std::filesystem::current_path() / ("assets/" + color + "/bispo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
-                else if (index_x == 3)
-                    tabuleiro[index_y][index_x] = new Rei(std::filesystem::current_path() / ("assets/" + color + "/rei.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
-                else if (index_x == 4)
-                    tabuleiro[index_y][index_x] = new Rainha(std::filesystem::current_path() / ("assets/" + color + "/rainha.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
+                std::string tipo;
+                switch (index_x)
+                {
+                    case 0:
+                    case 7:
+                        tipo = "torre";
+                        break;
+                    case 1:
+                    case 6:
+                        tipo = "cavalo";
+                        break;
+                    case 2:
+                    case 5:
+                        tipo = "bispo";
+                        break;
+                    case 3:
+                        tipo = "rei";
+                        break;
+                    case 4:
+                        tipo = "rainha";
+                        break;
+                }
+                if (index_y == 1) tipo = "peao";
+                tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(tipo, std::filesystem::current_path() / ("assets/" + color + "/" + tipo + ".png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
             }
         }
         else if (index_y > 5)
         {
+            index_real_y = std::abs(7 - index_y);
             for (int index_x = 0; index_x < 8; index_x++)
             {
                 bool isWhite = !brancasPrimeiro;
                 std::string color = isWhite ? "white" : "black";
                 int pos_x = tamanho/2 + tamanho*index_x - 60, pos_y = (8 - index_y)*tamanho - tamanho/2 - 60;
-                if (index_y == 6)
-                    tabuleiro[index_y][index_x] = new Peao(std::filesystem::current_path() / ("assets/" + color + "/peao.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
-                else if (index_x == 0 || index_x == 7)
-                    tabuleiro[index_y][index_x] = new Torre(std::filesystem::current_path() / ("assets/" + color + "/torre.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
-                else if (index_x == 1 || index_x== 6)
-                    tabuleiro[index_y][index_x] = new Cavalo(std::filesystem::current_path() / ("assets/" + color + "/cavalo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
-                else if (index_x == 2 || index_x== 5)
-                    tabuleiro[index_y][index_x] = new Bispo(std::filesystem::current_path() / ("assets/" + color + "/bispo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
-                else if (index_x == 3)
-                    tabuleiro[index_y][index_x] = new Rei(std::filesystem::current_path() / ("assets/" + color + "/rei.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
-                else if (index_x == 4)
-                    tabuleiro[index_y][index_x] = new Rainha(std::filesystem::current_path() / ("assets/" + color + "/rainha.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite);
+                std::string tipo;
+                switch (index_x)
+                {
+                    case 0:
+                    case 7:
+                        tipo = "torre";
+                        break;
+                    case 1:
+                    case 6:
+                        tipo = "cavalo";
+                        break;
+                    case 2:
+                    case 5:
+                        tipo = "bispo";
+                        break;
+                    case 3:
+                        tipo = "rei";
+                        break;
+                    case 4:
+                        tipo = "rainha";
+                        break;
+                }
+                if (index_y == 6) tipo = "peao";
+                tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(tipo, std::filesystem::current_path() / ("assets/" + color + "/" + tipo + ".png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
             }
         }
     }
@@ -101,6 +128,8 @@ bool Tabuleiro::addNewPos(int x, int y, bool isMoviment){return false;}
 void Tabuleiro::newPosObject(int index_x, int index_y, sf::Vector2f new_pos, bool isMoviment)
 {
     if (tabuleiro[index_y][index_x] != nullptr) {
+        std::cout << "Movendo peça para (" << index_x << ", " << index_y << ") to position (" << new_pos.x << ", " << new_pos.y << ")" << std::endl;
+        
         if (!isMoviment && tabuleiro[index_y][index_x]->addNewPos(new_pos.x, new_pos.y, isMoviment)) {
             int new_index_x = static_cast<int>(new_pos.x / tamanho_casas);
             int new_index_y = static_cast<int>(new_pos.y / tamanho_casas);
@@ -108,12 +137,19 @@ void Tabuleiro::newPosObject(int index_x, int index_y, sf::Vector2f new_pos, boo
 
             std::string tipo = typeid(*tabuleiro[index_y][index_x]).name(); // Obtém o tipo da peça
             std::transform(tipo.begin(), tipo.end(), tipo.begin(), ::tolower);
+            std::cout << "Peça type: " << tipo << std::endl;
+            
             std::unique_ptr<Peça> novaPeça = PeçasInstances::criarPeça(tipo, std::filesystem::current_path() / ("assets/" + std::string(isWhite ? "white" : "black") + "/" + tipo + ".png"), new_pos, *this, isWhite);
             tabuleiro[new_index_y][new_index_x] = novaPeça.release();
             tabuleiro[index_y][index_x] = nullptr;
 
+            std::cout << "Peça movida : (" << new_index_x << ", " << new_index_y << ")" << std::endl;
+
             tabuleiro[new_index_y][new_index_x]->addNewPos(new_index_x * tamanho_casas / 2 - 60, new_index_y * tamanho_casas - tamanho_casas / 2 - 60, !isMoviment);
         }
+    }
+    else {
+        std::cout << "Não a peças (" << index_x << ", " << index_y << ") to move." << std::endl;
     }
 }
 
