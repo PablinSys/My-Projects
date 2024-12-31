@@ -18,11 +18,6 @@ int main()
 	Tabuleiro tabuleiro(tamanho_casas, true);
 	I_UI<sf::VertexArray>* tabuleiroUI = &tabuleiro;
 
-	bool mouseIsPressed = false;
-	bool mouseIsReleased = false;
-
-	int* pos_x_anterior; int* pos_y_anterior;
-
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -32,29 +27,15 @@ int main()
 				window.close();
 			else if (event.type == sf::Event::MouseButtonPressed)
 			{
-				mouseIsPressed = true;
+				int pos_x = (int)( sf::Mouse::getPosition(window).x/tamanho_casas), pos_y = (int)(sf::Mouse::getPosition(window).y/tamanho_casas);
+
+				while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				{
+					tabuleiro.newPosObject(pos_x, pos_y, {(float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y}, true);
+					update(window, tabuleiroUI);
+				}
+				tabuleiro.newPosObject(pos_x, pos_y, {(float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y}, false);
 			}
-			else if (event.type == sf::Event::MouseButtonReleased)
-			{
-				mouseIsReleased = true;
-			}
-		}
-		if (mouseIsPressed)
-		{
-			int pos_x = (int)( sf::Mouse::getPosition(window).x/tamanho_casas), pos_y = (int)(sf::Mouse::getPosition(window).y/tamanho_casas);
-			if (pos_x_anterior == nullptr || pos_y_anterior == nullptr) 
-			{
-				pos_x_anterior = new int(pos_x);
-				pos_y_anterior = new int(pos_y);
-			}
-			tabuleiro.newPosObject(*pos_x_anterior, *pos_y_anterior, {(float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y}, true);
-		}
-		if (mouseIsReleased)
-		{
-			tabuleiro.newPosObject(*pos_x_anterior, *pos_y_anterior, {(float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y}, false);
-			delete pos_x_anterior; delete pos_y_anterior;
-			pos_x_anterior = nullptr; pos_y_anterior = nullptr;
-			mouseIsPressed = false; mouseIsReleased = false;
 		}
 		update(window, tabuleiroUI);
 	}
