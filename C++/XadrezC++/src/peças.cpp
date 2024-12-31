@@ -13,7 +13,7 @@ Peça::Peça(const std::filesystem::path& path_img, const sf::Vector2f& position
     objectUI->setTexture(peça_img);
     objectUI->setPosition({position.x, position.y});
 }
-bool Peça::addNewPos(int x, int y)
+bool Peça::addNewPos(int x, int y, bool isMoviment)
 {
     position.x = x; position.y = y;
     objectUI->setPosition(position); // Atualiza a posição da peça *temporário por enquanto até implementar animação
@@ -44,3 +44,31 @@ bool Bispo::analisarMovimento(const sf::Vector2f& pos) { return true; }
 bool Cavalo::analisarMovimento(const sf::Vector2f& pos) { return true; }
 bool Rainha::analisarMovimento(const sf::Vector2f& pos) { return true; }
 bool Rei::analisarMovimento(const sf::Vector2f& pos) { return true; }
+
+
+#include <memory>
+#include <string>
+#include <stdexcept>
+
+std::unique_ptr<Peça> PeçasInstances::criarPeça(const std::string& tipo, const std::filesystem::path& caminho, const sf::Vector2f& pos, Tabuleiro& tabuleiro, bool isWhite) {
+        if (tipo == "peao") {
+            return std::make_unique<Peao>(caminho, pos, tabuleiro, isWhite);
+        }
+        else if (tipo == "torre") {
+            return std::make_unique<Torre>(caminho, pos, tabuleiro, isWhite);
+        }
+        else if (tipo == "bispo") {
+            return std::make_unique<Bispo>(caminho, pos, tabuleiro, isWhite);
+        }
+        else if (tipo == "cavalo") {
+            return std::make_unique<Cavalo>(caminho, pos, tabuleiro, isWhite);
+        }
+        else if (tipo == "rainha") {
+            return std::make_unique<Rainha>(caminho, pos, tabuleiro, isWhite);
+        }
+        else if (tipo == "rei") {
+            return std::make_unique<Rei>(caminho, pos, tabuleiro, isWhite);
+        }
+        throw std::invalid_argument("Tipo de peça desconhecido");
+}
+

@@ -10,7 +10,8 @@ class I_UI
         T* objectUI;
     public:
         sf::Vector2f position;
-        virtual bool addNewPos(int x, int y) = 0;
+        virtual bool addNewPos(int x, int y, bool isMoviment) = 0;
+        bool addNewPos(int inde_x, int index_y, sf::Vector2f new_position);
         virtual void draw(sf::RenderWindow* window);
 };
 

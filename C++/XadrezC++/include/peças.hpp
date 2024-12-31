@@ -15,7 +15,7 @@ class Peça : public I_UI<sf::Sprite> //classe abstrata
 		virtual bool analisarMovimento(const sf::Vector2f& pos) = 0;
 	public : 
 		Peça(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco);
-		bool addNewPos(int x, int y) override;
+		bool addNewPos(int x, int y, bool isMoviment) override;
 		~Peça();
 };
 class Peao : public Peça
@@ -54,4 +54,14 @@ class Rei : public Peça
 	public :
 		Rei(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco);
 };
+
+#include <memory>
+#include <string>
+#include <stdexcept>
+
+class PeçasInstances {
+public:
+    static std::unique_ptr<Peça> criarPeça(const std::string& tipo, const std::filesystem::path& caminho, const sf::Vector2f& pos, Tabuleiro& tabuleiro, bool isWhite);
+};
+
 #endif
