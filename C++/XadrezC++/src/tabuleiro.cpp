@@ -50,7 +50,6 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
                 bool isWhite = brancasPrimeiro;
                 std::string color = isWhite ? "white" : "black";
                 int pos_x = tamanho/2 + tamanho*index_x - 60, pos_y = (8 - index_y)*tamanho - tamanho/2 - 60;
-                std::cout << "Pos: " << pos_x << ", " << pos_y << std::endl;
                 switch (index_x)
                 {
                     case 0:
@@ -142,11 +141,11 @@ bool Tabuleiro::addNewPos(int x, int y, bool isMoviment){return false;}
 void Tabuleiro::newPosObject(int index_x, int index_y, sf::Vector2f new_pos, bool isMoviment)
 {
     if (!std::is_same_v<decltype(*tabuleiro[index_y][index_x]), Peça>) {
-        //std::cout << "Movendo peça para (" << index_x << ", " << index_y << ") to position (" << (int)(new_pos.x/tamanho_casas) << ", " << (int)(new_pos.y/tamanho_casas) << ")" << std::endl;
-        
+        if (tabuleiro[index_y][index_x] == nullptr) return;
         if (!isMoviment)
         {
-            if (tabuleiro[index_y][index_x]->addNewPos(new_pos.x, new_pos.y, isMoviment))
+            bool altered = tabuleiro[index_y][index_x]->addNewPos(new_pos.x, new_pos.y, isMoviment);
+            if (altered)
             {
                 int new_index_x = static_cast<int>(new_pos.x / tamanho_casas);
                 int new_index_y = static_cast<int>(new_pos.y / tamanho_casas);
@@ -154,19 +153,25 @@ void Tabuleiro::newPosObject(int index_x, int index_y, sf::Vector2f new_pos, boo
 
                 std::string tipo = typeid(*tabuleiro[index_y][index_x]).name();
                 tipo.erase(std::remove_if(tipo.begin(), tipo.end(), [](char c) { return std::isdigit(c); }), tipo.end()); std::transform(tipo.begin(), tipo.end(), tipo.begin(), ::tolower);
+                
+                // Debug 
                 std::cout << "Peça type: " << tipo << std::endl;
                 
+                // Cria uma nova peça no lugar da antiga, com a cor oposta e na nova posição
                 std::unique_ptr<Peça> novaPeça = PeçasInstances::criarPeça(typeid(*tabuleiro[index_y][index_x]), std::filesystem::current_path() / ("assets/" + std::string(isWhite ? "white" : "black") + "/" + tipo + ".png"), new_pos, *this, isWhite);
                 tabuleiro[new_index_y][new_index_x] = novaPeça.release();
                 tabuleiro[index_y][index_x] = nullptr;
 
+                // Move a peça para a nova posicao
                 tabuleiro[new_index_y][new_index_x]->addNewPos(tamanho_casas/2 + tamanho_casas*new_index_x - 60, (new_index_y)*tamanho_casas-tamanho_casas/8, !isMoviment);
-                //while(true){}
             }
             else 
-            {
-                tabuleiro[index_y][index_x]->addNewPos(index_x != 0 ? (index_x * tamanho_casas / 2 - 60) : tamanho_casas / 2, (index_y) * tamanho_casas + tamanho_casas / 2 + 60, !isMoviment);
-            }
+                tabuleiro[index_y][index_x]->addNewPos(tamanho_casas/2 + tamanho_casas*index_x - 60, (index_y)*tamanho_casas-tamanho_casas/8, !isMoviment);
+        }
+        else 
+        {
+            // Move a peça para seguir o mouse
+            tabuleiro[index_y][index_x]->addNewPos(new_pos.x-60, new_pos.y-60, isMoviment);
         }
     }
     else {
@@ -179,8 +184,12 @@ Tabuleiro::~Tabuleiro()
 {
     for (int i = 0; i < 8; i++)
     {
-        delete[] tabuleiro;
+        for (int j = 0; j < 8; j++)
+        {
+            if (tabuleiro[i][j] != nullptr) delete tabuleiro[i][j];
+        }
+        delete[] tabuleiro[i];
     }
-    delete tabuleiro;
+    delete[] tabuleiro;
     delete objectUI;
 }

@@ -3,6 +3,14 @@
 #include "../include/I_UI.hpp"
 #include <iostream>
 
+
+void update(sf::RenderWindow& window, I_UI<sf::VertexArray>* tabuleiroUI)
+{
+    window.clear();
+    tabuleiroUI->draw(&window);
+    window.display();
+}
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 800), "XADREZ", sf::Style::Titlebar | sf::Style::Close);
@@ -18,7 +26,6 @@ int main()
 	while (window.isOpen())
 	{
 		sf::Event event;
-		window.clear(sf::Color::Black);
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
@@ -34,23 +41,22 @@ int main()
 		}
 		if (mouseIsPressed)
 		{
-			int pos_x = (int)(event.mouseButton.x/tamanho_casas), pos_y = (int)(event.mouseButton.y/tamanho_casas);
+			int pos_x = (int)( sf::Mouse::getPosition(window).x/tamanho_casas), pos_y = (int)(sf::Mouse::getPosition(window).y/tamanho_casas);
 			if (pos_x_anterior == nullptr || pos_y_anterior == nullptr) 
 			{
 				pos_x_anterior = new int(pos_x);
 				pos_y_anterior = new int(pos_y);
 			}
-			tabuleiro.newPosObject(*pos_x_anterior, *pos_y_anterior, {(float)event.mouseButton.x, (float)event.mouseButton.y}, true);
+			tabuleiro.newPosObject(*pos_x_anterior, *pos_y_anterior, {(float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y}, true);
 		}
 		if (mouseIsReleased)
 		{
-			tabuleiro.newPosObject(*pos_x_anterior, *pos_y_anterior, {(float)event.mouseButton.x, (float)event.mouseButton.y}, false);
+			tabuleiro.newPosObject(*pos_x_anterior, *pos_y_anterior, {(float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y}, false);
+			delete pos_x_anterior; delete pos_y_anterior;
 			pos_x_anterior = nullptr; pos_y_anterior = nullptr;
 			mouseIsPressed = false; mouseIsReleased = false;
 		}
-		tabuleiroUI->draw(&window);
-		window.display();
-		sf::sleep(sf::seconds(1));
+		update(window, tabuleiroUI);
 	}
 	return 0;
 }
