@@ -31,10 +31,10 @@ int main()
 
 				while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				{
-					tabuleiro.newPosObject(pos_x, pos_y, {(float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y}, true);
+					tabuleiro.newPosObject(pos_x, pos_y, {(float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y}, sf::Mouse::isButtonPressed(sf::Mouse::Left));
 					update(window, tabuleiroUI);
 				}
-				tabuleiro.newPosObject(pos_x, pos_y, {(float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y}, false);
+				tabuleiro.newPosObject(pos_x, pos_y, {(float) sf::Mouse::getPosition(window).x, (float) sf::Mouse::getPosition(window).y}, sf::Mouse::isButtonPressed(sf::Mouse::Left));
 			}
 		}
 		update(window, tabuleiroUI);
