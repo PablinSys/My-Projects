@@ -11,48 +11,60 @@ class Peça : public I_UI<sf::Sprite> //classe abstrata
 	protected :
 		sf::Texture peça_img;
 		Tabuleiro* tab;
-		bool isBranco;
-		virtual bool analisarMovimento(const sf::Vector2f& pos) = 0;
+		virtual bool analisarMovimento(const sf::Vector2i& new_pos)  = 0;
 	public : 
-		Peça(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco);
+		bool isBranco;
+		sf::Vector2i positionIndex;
+		Peça(const std::filesystem::path& path_img, const sf::Vector2f& position, const sf::Vector2i indexPosition, Tabuleiro& tabuleiro, const bool& isBranco);
 		bool addNewPos(int x, int y, bool isMoviment) override;
 		~Peça();
 };
 class Peao : public Peça
 {
-	bool analisarMovimento(const sf::Vector2f& pos) override;
+	protected :
+		bool analisarMovimento(const sf::Vector2i& new_pos)  override;
+	private :
+		bool primeiroLance = true;
 	public :
-		Peao(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco);
+		Peao(const std::filesystem::path& path_img, const sf::Vector2f& position, const sf::Vector2i indexPosition, Tabuleiro& tabuleiro, const bool& isBranco, const bool& primeiroLance = true);
 };
-class Torre : public Peça
+class Torre : virtual public Peça
 {
-	bool analisarMovimento(const sf::Vector2f& pos) override;
+	protected :
+		bool analisarMovimento(const sf::Vector2i& new_pos)  override;
+	private :
+		bool _; // migué
 	public :
-		Torre(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco);
+		Torre(const std::filesystem::path& path_img, const sf::Vector2f& position, const sf::Vector2i indexPosition, Tabuleiro& tabuleiro, const bool& isBranco);
 };
 class Cavalo : public Peça
 {
-	bool analisarMovimento(const sf::Vector2f& pos) override;
+	protected :
+		bool analisarMovimento(const sf::Vector2i& new_pos)  override;
 	public :
-		Cavalo(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco);
+		Cavalo(const std::filesystem::path& path_img, const sf::Vector2f& position, const sf::Vector2i indexPosition, Tabuleiro& tabuleiro, const bool& isBranco);
 };
-class Bispo : public Peça
+class Bispo : virtual public Peça
 {
-	bool analisarMovimento(const sf::Vector2f& pos) override;
+	protected :
+		bool analisarMovimento(const sf::Vector2i& new_pos)  override;
+	bool __; // migué
 	public :
-		Bispo(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco);
+		Bispo(const std::filesystem::path& path_img, const sf::Vector2f& position, const sf::Vector2i indexPosition, Tabuleiro& tabuleiro, const bool& isBranco);
 };
-class Rainha : public Peça
+class Rainha : public Bispo, public Torre
 {
-	bool analisarMovimento(const sf::Vector2f& pos) override;
+	protected :
+		bool analisarMovimento(const sf::Vector2i& new_pos)  override;
 	public :
-		Rainha(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco);
+		Rainha(const std::filesystem::path& path_img, const sf::Vector2f& position, const sf::Vector2i indexPosition, Tabuleiro& tabuleiro, const bool& isBranco);
 };
 class Rei : public Peça
 {
-	bool analisarMovimento(const sf::Vector2f& pos) override;
+	protected :
+		bool analisarMovimento(const sf::Vector2i& new_pos)  override;
 	public :
-		Rei(const std::filesystem::path& path_img, const sf::Vector2f& position, Tabuleiro& tabuleiro, const bool& isBranco);
+		Rei(const std::filesystem::path& path_img, const sf::Vector2f& position, const sf::Vector2i indexPosition, Tabuleiro& tabuleiro, const bool& isBranco);
 };
 
 #include <memory>
@@ -61,7 +73,7 @@ class Rei : public Peça
 
 class PeçasInstances {
 public:
-    static std::unique_ptr<Peça> criarPeça(const std::string& tipo, const std::filesystem::path& caminho, const sf::Vector2f& pos, Tabuleiro& tabuleiro, bool isWhite);
+    static std::unique_ptr<Peça> criarPeça(const std::type_info& tipo, const std::filesystem::path& caminho, const sf::Vector2f& pos, const sf::Vector2i& indexpos, Tabuleiro& tabuleiro, bool isWhite);
 };
 
 #endif
