@@ -54,26 +54,26 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
                 {
                     case 0:
                     case 7:
-                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Torre), std::filesystem::current_path() / ("assets/" + color + "/torre.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Torre), std::filesystem::current_path() / ("assets/" + color + "/torre.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite).release();
                         break;
                     case 1:
                     case 6:
-                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Cavalo), std::filesystem::current_path() / ("assets/" + color + "/cavalo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Cavalo), std::filesystem::current_path() / ("assets/" + color + "/cavalo.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite).release();
                         break;
                     case 2:
                     case 5:
-                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Bispo), std::filesystem::current_path() / ("assets/" + color + "/bispo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Bispo), std::filesystem::current_path() / ("assets/" + color + "/bispo.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite).release();
                         break;
                     case 3:
-                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rei), std::filesystem::current_path() / ("assets/" + color + "/rei.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rei), std::filesystem::current_path() / ("assets/" + color + "/rei.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite).release();
                         break;
                     case 4:
-                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rainha), std::filesystem::current_path() / ("assets/" + color + "/rainha.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rainha), std::filesystem::current_path() / ("assets/" + color + "/rainha.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite).release();
                         break;
                 }
                 if (index_y == 1) 
                 {
-                    tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Peao), std::filesystem::current_path() / ("assets/" + color + "/peao.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                    tabuleiro[index_real_y][index_x] = new Peao(std::filesystem::current_path() / ("assets/" + color + "/peao.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite, true);
                 }
             }
         }
@@ -90,26 +90,26 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
                 {
                     case 0:
                     case 7:
-                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Torre), std::filesystem::current_path() / ("assets/" + color + "/torre.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Torre), std::filesystem::current_path() / ("assets/" + color + "/torre.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite).release();
                         break;
                     case 1:
                     case 6:
-                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Cavalo), std::filesystem::current_path() / ("assets/" + color + "/cavalo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Cavalo), std::filesystem::current_path() / ("assets/" + color + "/cavalo.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite).release();
                         break;
                     case 2:
                     case 5:
-                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Bispo), std::filesystem::current_path() / ("assets/" + color + "/bispo.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Bispo), std::filesystem::current_path() / ("assets/" + color + "/bispo.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite).release();
                         break;
                     case 3:
-                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rei), std::filesystem::current_path() / ("assets/" + color + "/rei.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rei), std::filesystem::current_path() / ("assets/" + color + "/rei.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite).release();
                         break;
                     case 4:
-                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rainha), std::filesystem::current_path() / ("assets/" + color + "/rainha.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                        tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Rainha), std::filesystem::current_path() / ("assets/" + color + "/rainha.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite).release();
                         break;
                 }
                 if (index_y == 6) 
                 {
-                    tabuleiro[index_real_y][index_x] = PeçasInstances::criarPeça(typeid(Peao), std::filesystem::current_path() / ("assets/" + color + "/peao.png"), sf::Vector2f(pos_x, pos_y), *this, isWhite).release();
+                    tabuleiro[index_real_y][index_x] = new Peao(std::filesystem::current_path() / ("assets/" + color + "/peao.png"), sf::Vector2f(pos_x, pos_y), sf::Vector2i(index_x, index_real_y), *this, isWhite, true);
                 }
             }
         }
@@ -122,6 +122,7 @@ Tabuleiro::Tabuleiro(const int& tamanho, const bool& brancasPrimeiro)
         }
     }
 }
+Peça*** Tabuleiro::getTabuleiro() {return tabuleiro;}
 void Tabuleiro::draw(sf::RenderWindow* window)
 {
     for (int i = 0; i < 64; i++)
@@ -158,12 +159,12 @@ void Tabuleiro::newPosObject(int index_x, int index_y, sf::Vector2f new_pos, boo
                 std::cout << "Peça type: " << tipo << std::endl;
                 
                 // Cria uma nova peça no lugar da antiga, com a cor oposta e na nova posição
-                std::unique_ptr<Peça> novaPeça = PeçasInstances::criarPeça(typeid(*tabuleiro[index_y][index_x]), std::filesystem::current_path() / ("assets/" + std::string(isWhite ? "white" : "black") + "/" + tipo + ".png"), new_pos, *this, isWhite);
-                tabuleiro[new_index_y][new_index_x] = novaPeça.release();
+                int pos_x = tamanho_casas/2 + tamanho_casas*new_index_x - 60, pos_y = (new_index_y)*tamanho_casas-tamanho_casas/8; // NOVA POSIÇÃO
+                if (tipo == "peao")
+                    tabuleiro[new_index_y][new_index_x] = new Peao(std::filesystem::current_path() / ("assets/" + std::string(isWhite ? "white" : "black") + "/" + tipo + ".png"), {pos_x, pos_y}, {new_index_x, new_index_y}, *this, isWhite, false);
+                else 
+                    tabuleiro[new_index_y][new_index_x] = PeçasInstances::criarPeça(typeid(*tabuleiro[index_y][index_x]), std::filesystem::current_path() / ("assets/" + std::string(isWhite ? "white" : "black") + "/" + tipo + ".png"), {pos_x, pos_y}, {new_index_x, new_index_y}, *this, isWhite).release();
                 tabuleiro[index_y][index_x] = nullptr;
-
-                // Move a peça para a nova posicao
-                tabuleiro[new_index_y][new_index_x]->addNewPos(tamanho_casas/2 + tamanho_casas*new_index_x - 60, (new_index_y)*tamanho_casas-tamanho_casas/8, !isMoviment);
             }
             else 
                 tabuleiro[index_y][index_x]->addNewPos(tamanho_casas/2 + tamanho_casas*index_x - 60, (index_y)*tamanho_casas-tamanho_casas/8, !isMoviment);
